@@ -68,9 +68,9 @@ export default {
       menulist: [],
       iconsObj: {
         '100': 'iconfont icon-tijikongjian',
-        '200': 'iconfont icon-user',
+        '200': 'iconfont icon-danju',
         '300': 'iconfont icon-shangpin',
-        '400': 'iconfont icon-danju'
+        '400': 'iconfont icon-user'
       },
       // 是否折叠
       isCollapse: false,

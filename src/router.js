@@ -33,6 +33,16 @@ const Report = () => import(/* webpackChunkName: "Order_Report" */ './components
 const MachineList = () => import(/* webpackChunkName: "Machine" */ './components/machine/MachineList.vue')
 const MachineDetails = () => import(/* webpackChunkName: "Machine" */ './components/machine/MachineDetails.vue')
 
+const MyReservationList = () => import(/* webpackChunkName: "Reservation" */ './components/myReservation/MyReservationList.vue')
+
+const InstrumentList = () => import(/* webpackChunkName: "Instrument" */ './components/instrument/InstrumentList.vue')
+const InstrumentDetails = () => import(/* webpackChunkName: "Instrument" */ './components/instrument/InstrumentDetails.vue')
+
+const MyFavoriteList = () => import(/* webpackChunkName: "MyFavorite" */ './components/myFavorite/MyFavoriteList.vue')
+
+const BasicInformation = () => import(/* webpackChunkName: "PersonalCenter" */ './components/personalCenter/BasicInformation.vue')
+const MyMessage = () => import(/* webpackChunkName: "PersonalCenter" */ './components/personalCenter/MyMessage.vue')
+
 Vue.use(Router)
 
 const router = new Router({
@@ -46,6 +56,13 @@ const router = new Router({
       children: [
         { path: '/machineList', component: MachineList },
         { path: '/machineDetails', name: 'MachineDetails', component: MachineDetails },
+
+        { path: '/reservationList', component: MyReservationList },
+        { path: '/instrumentList', component: InstrumentList },
+        { path: '/instrumentDetails', name: 'InstrumentDetails', component: InstrumentDetails },
+        { path: '/myFavorite', component: MyFavoriteList },
+        { path: '/information', component: BasicInformation },
+        { path: '/myMessage', component: MyMessage },
 
         { path: '/welcome', component: Welcome },
         { path: '/users', component: Users },

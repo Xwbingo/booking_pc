@@ -26,21 +26,91 @@
                     prefix-icon="iconfont icon-3702mima"
                     type="password"></el-input>
         </el-form-item>
+        <el-link type="primary"
+                 @click="resetPasswordDialog">忘记密码？</el-link>
         <!-- 按钮区域 -->
         <el-form-item class="btns">
           <el-button type="primary"
                      @click="login">登录</el-button>
-          <el-button type="info"
-                     @click="resetLoginForm">重置</el-button>
+          <el-button @click="addDialogVisible = true">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
+
+    <!-- 注册用户的对话框 -->
+    <el-dialog title="注册"
+               :visible.sync="addDialogVisible"
+               width="50%"
+               @close="addDialogClosed">
+      <!-- 内容主体区域 -->
+      <el-form :model="addForm"
+               :rules="addFormRules"
+               ref="addFormRef"
+               label-width="70px">
+        <el-form-item label="用户名"
+                      prop="name">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="密码"
+                      prop="password">
+          <el-input v-model="addForm.password"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱"
+                      prop="mail">
+          <el-input v-model="addForm.mail"></el-input>
+        </el-form-item>
+        <el-form-item label="电话"
+                      prop="phone">
+          <el-input v-model="addForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="单位"
+                      prop="unit">
+          <el-input v-model="addForm.unit"></el-input>
+        </el-form-item>
+        <el-form-item label="学号"
+                      prop="studyNum">
+          <el-input v-model="addForm.studyNum"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区域 -->
+      <span slot="footer"
+            class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary"
+                   @click="regist">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 export default {
   data () {
+    // 验证邮箱的规则
+    var checkEmail = (rule, value, cb) => {
+      // 验证邮箱的正则表达式
+      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+
+      if (regEmail.test(value)) {
+        // 合法的邮箱
+        return cb()
+      }
+
+      cb(new Error('请输入合法的邮箱'))
+    }
+
+    // 验证手机号的规则
+    var checkMobile = (rule, value, cb) => {
+      // 验证手机号的正则表达式
+      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+
+      if (regMobile.test(value)) {
+        return cb()
+      }
+
+      cb(new Error('请输入合法的手机号'))
+    }
     return {
       // 这是登录表单的数据绑定对象
       loginForm: {
@@ -59,14 +129,84 @@ export default {
           { required: true, message: '请输入登录密码', trigger: 'blur' },
           { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
         ]
+      },
+      // 控制注册对话框的显示与隐藏
+      addDialogVisible: false,
+      // 注册表单
+      addForm: {
+        name: '',
+        password: '',
+        mail: '',
+        phone: '',
+        unit: '',
+        studyNum: ''
+      },
+      // 添加表单的验证规则对象
+      addFormRules: {
+        name: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          {
+            min: 3,
+            max: 10,
+            message: '用户名的长度在3~10个字符之间',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          {
+            min: 6,
+            max: 15,
+            message: '用户名的长度在6~15个字符之间',
+            trigger: 'blur'
+          }
+        ],
+        mail: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { validator: checkMobile, trigger: 'blur' }
+        ]
       }
     }
   },
   methods: {
-    // 点击重置按钮，重置登录表单
-    resetLoginForm () {
-      // console.log(this);
-      this.$refs.loginFormRef.resetFields()
+    // 监听注册用户对话框的关闭事件
+    addDialogClosed () {
+      this.$refs.addFormRef.resetFields()
+    },
+    // 点击按钮，注册新用户
+    regist () {
+      this.$refs.addFormRef.validate(async valid => {
+        if (!valid) return
+        // 可以发起注册用户的网络请求
+        const { data: res } = await this.$http.post('roles/register', this.addForm)
+
+        if (res.code !== 200) {
+          let resStr = ''
+          if ((res.data & 0x01) !== 0) {
+            resStr += '用户名 '
+          }
+          if ((res.data & 0x02) !== 0) {
+            resStr += '邮箱 '
+          }
+          if ((res.data & 0x04) !== 0) {
+            resStr += '手机 '
+          }
+          if ((res.data & 0x08) !== 0) {
+            resStr += '学号 '
+          }
+          resStr += '已被注册！'
+          return this.$message.error(resStr)
+        }
+        this.$message.success('帐号注册成功！')
+        // 隐藏添加用户的对话框
+        this.addDialogVisible = false
+        this.loginForm.username = this.addForm.name
+        this.loginForm.password = this.addForm.password
+      })
     },
     login () {
       this.$refs.loginFormRef.validate(async valid => {
@@ -81,6 +221,10 @@ export default {
         // 2. 通过编程式导航跳转到后台主页，路由地址是 /home
         this.$router.push('/home')
       })
+    },
+    // 忘记密码? 打开重置密码对话框
+    resetPasswordDialog () {
+
     }
   }
 }
@@ -143,5 +287,8 @@ export default {
   text-align: center; /*设置文本水平居中*/
   // overflow: hidden; /*防止内容超出容器或者产生自动换行*/
   transform: translate(0%, 100%);
+  position: absolute;
+  left: 30%;
+  top: 5%;
 }
 </style>

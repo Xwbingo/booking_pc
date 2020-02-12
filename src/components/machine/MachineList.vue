@@ -14,13 +14,9 @@
              :key="item.machineId">
       <el-row :gutter="0">
         <el-col :span="10">
-          <!-- <img :src="getImgUrl(item.machinePicture)"
+          <img src="item.machinePicture"
                alt=""
                width="100px"
-               @click="jumpTodetails(item.machineId)"> -->
-          <img src="https://cn.vuejs.org/images/logo.png"
-               alt=""
-               height="200px"
                @click="jumpTodetails(item.machineId)">
         </el-col>
         <el-col :span="14">
@@ -62,7 +58,7 @@
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
                      :current-page="page"
-                     :page-sizes="[1, 2, 5]"
+                     :page-sizes="[10, 20, 50]"
                      :page-size="size"
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="tatal">
@@ -78,7 +74,7 @@ export default {
     return {
       machineList: [],
       page: 1,
-      size: 2,
+      size: 10,
       tatal: 0
     }
   },
