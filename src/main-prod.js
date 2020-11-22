@@ -15,7 +15,7 @@ import NProgress from 'nprogress'
 
 import axios from 'axios'
 // 配置请求的跟路径
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'https://www.xmuins.online:8443/api/v1'
 // 在 request 拦截器中，展示进度条 NProgress.start()
 axios.interceptors.request.use(config => {
   // console.log(config)
@@ -37,7 +37,7 @@ Vue.component('tree-table', TreeTable)
 // 将富文本编辑器，注册为全局可用的组件
 Vue.use(VueQuillEditor)
 
-Vue.filter('dateFormat', function(originVal) {
+Vue.filter('dateFormat', function (originVal) {
   const dt = new Date(originVal)
 
   const y = dt.getFullYear()

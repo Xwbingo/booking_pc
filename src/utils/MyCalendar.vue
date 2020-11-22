@@ -227,23 +227,50 @@ export default {
       if (item.isDisabled || this.isForbiddened[index]) {
         return
       }
-      this.isSelect[index] = !this.isSelect[index]
-      this.$forceUpdate()
-      let timeRangeInfo = this.timeRangeInfo
-      let list = timeRangeInfo.list
-      // eslint-disable-next-line no-unused-vars
-      let timeStr = list[index].timeStr
-      for (let i = 0; i < list.length; i++) {
-        let info = list[i]
-        if (i === index) {
-          info.checked = this.isSelect[index]
+      // 判断先前是否已选择时间
+      let selectIndex = []
+      for (let i = 0; i < this.timeRangeInfo.list.length; i++) {
+        if (this.isSelect[i]) {
+          selectIndex.push(i)
+        }
+      }
+      if (selectIndex.length === 1) {
+        if (selectIndex[0] === index) {
+          this.isSelect[index] = false
+          this.$forceUpdate()
+          this.timeRangeInfo.list[index].checked = false
         } else {
-          if (!info.checked) {
-            info.checked = false
+          let bigIndex = selectIndex[0] >= index ? selectIndex[0] : index
+          let smallIndex = selectIndex[0] <= index ? selectIndex[0] : index
+          for (let i = smallIndex + 1; i < bigIndex; i++) {
+            if (this.isForbiddened[i]) {
+              this.isSelect[index] = true
+              this.isSelect[selectIndex[0]] = false
+              this.$forceUpdate()
+              this.timeRangeInfo.list[index].checked = true
+              this.timeRangeInfo.list[selectIndex[0]].checked = false
+              return
+            }
+          }
+          for (let i = smallIndex; i <= bigIndex; i++) {
+            this.isSelect[i] = true
+            this.$forceUpdate()
+            this.timeRangeInfo.list[i].checked = true
+          }
+        }
+      } else {
+        for (let i = 0; i < this.timeRangeInfo.list.length; i++) {
+          if (i === index) {
+            this.isSelect[i] = true
+            this.$forceUpdate()
+            this.timeRangeInfo.list[i].checked = true
+          } else {
+            this.isSelect[i] = false
+            this.$forceUpdate()
+            this.timeRangeInfo.list[i].checked = false
           }
         }
       }
-      this.timeRangeInfo = timeRangeInfo
     },
     // 按下了确认键
     _bottomYesBtnClick () {
@@ -251,14 +278,14 @@ export default {
       let list = timeRangeInfo.list
       // console.log(list)
       // eslint-disable-next-line no-unused-vars
-      let timeStr = ''
-      for (let i = 0; i < list.length; i++) {
-        let info = list[i]
-        if (info.checked) {
-          timeStr = info.timeStr
-          break
-        }
-      }
+      // let timeStr = ''
+      // for (let i = 0; i < list.length; i++) {
+      //   let info = list[i]
+      //   if (info.checked) {
+      //     timeStr = info.timeStr
+      //     break
+      //   }
+      // }
       let selectTimeStamp = [] // 选择的时间戳，这里的逻辑过于简单需要完善，要求用户选一段连续时间
       for (let i = 0; i < list.length; i++) {
         let info = list[i]
@@ -301,6 +328,7 @@ export default {
 
 <style scoped>
 .yycalendar_super_view {
+  z-index: 800;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -451,7 +479,7 @@ export default {
   background: #409eff;
   border-radius: 2px;
   width: 62px;
-  height: 32px; /*小一点，有点动态效果 */
+  height: 34px; /*小一点，有点动态效果 */
   margin-right: 11px;
   margin-bottom: 10px;
   display: flex;

@@ -278,9 +278,9 @@ export default {
         this.addForm.machineId = this.machineId
         this.addForm.reservationStartTime = data.reservationStartTime
         this.addForm.reservationEndTime = data.reservationEndTime
-        this.addForm.beginTime = data.beginTime
-        this.addForm.endTime = data.endTime
-        this.addForm.timeGap = data.timeGap
+        // this.addForm.beginTime = data.beginTime
+        // this.addForm.endTime = data.endTime
+        // this.addForm.timeGap = data.timeGap
         const { data: res } = await this.$http.post('reservation/manual', this.addForm)
         console.log(res)
         if (res.code === 20003) {
@@ -347,7 +347,7 @@ export default {
 .machine_right {
   margin: 0px 20px;
   max-width: 100%;
-  width: 800px;
+  // width: 750px;
 }
 .bottombtn {
   display: flex;

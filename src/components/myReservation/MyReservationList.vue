@@ -122,7 +122,7 @@
                          width="70px"
                          prop="machineId"></el-table-column>
         <el-table-column label="仪器图片"
-                         width="170px">
+                         width="160px">
           <template slot-scope="scope">
             <div class="machine_picture">
               <img :src="scope.row.machinePicture">
@@ -151,8 +151,16 @@
         <el-table-column label="实际结束时间"
                          width="150px"
                          prop="actualEndTime"></el-table-column>
+        <el-table-column label="用户数据"
+                         width="140px">
+          <template>
+            <el-link type="primary">数据1下载链接</el-link>
+            <el-link type="primary">数据2下载链接</el-link>
+            <el-link type="primary">数据3下载链接</el-link>
+          </template>
+        </el-table-column>
         <el-table-column label="预约状态"
-                         width="110px"
+                         width="100px"
                          prop="role_name">
           <template slot-scope="scope">
             <el-tag size="mini"

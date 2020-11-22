@@ -1,9 +1,10 @@
 <template>
   <div class="login_container">
-    <div class="system_title">
-      厦门大学仪器预约系统V1.0
-    </div>
+
     <div class="login_box">
+      <div class="system_title">
+        实验仪器共享平台
+      </div>
       <!-- 头像区域 -->
       <div class="avatar_box">
         <img src="../assets/logo.png"
@@ -35,8 +36,10 @@
           <el-button @click="addDialogVisible = true">注册</el-button>
         </el-form-item>
       </el-form>
-    </div>
 
+    </div>
+    <a href="http://www.beian.miit.gov.cn"
+       class="footer">闽ICP备20002687号-1</a>
     <!-- 注册用户的对话框 -->
     <el-dialog title="注册"
                :visible.sync="addDialogVisible"
@@ -114,8 +117,8 @@ export default {
     return {
       // 这是登录表单的数据绑定对象
       loginForm: {
-        username: 'ad996',
-        password: 'a22100538'
+        username: '',
+        password: ''
       },
       // 这是表单的验证规则对象
       loginFormRules: {
@@ -157,7 +160,7 @@ export default {
           {
             min: 6,
             max: 15,
-            message: '用户名的长度在6~15个字符之间',
+            message: '密码的长度在6~15个字符之间',
             trigger: 'blur'
           }
         ],
@@ -234,6 +237,8 @@ export default {
 .login_container {
   background-color: #2b4b6b;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .login_box {
@@ -245,7 +250,17 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -20%);
-
+  .system_title {
+    font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+    color: rgb(228, 210, 210);
+    font-size: 50px;
+    line-height: 100px; /*设置line-height与父级元素的height相等*/
+    text-align: center; /*设置文本水平居中*/
+    position: absolute;
+    left: 50%;
+    width: 800px;
+    transform: translate(-50%, -190%);
+  }
   .avatar_box {
     height: 130px;
     width: 130px;
@@ -278,17 +293,13 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-.system_title {
-  // 不对，相对于框还是有问题
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-  color: rgb(228, 210, 210);
-  font-size: 50px;
-  line-height: 100px; /*设置line-height与父级元素的height相等*/
-  text-align: center; /*设置文本水平居中*/
-  // overflow: hidden; /*防止内容超出容器或者产生自动换行*/
-  transform: translate(0%, 100%);
+.footer {
   position: absolute;
-  left: 30%;
-  top: 5%;
+  bottom: 0;
+  color: #fff;
+  transform: translate(0, -50px);
+  width: 100%;
+  height: 10px;
+  text-align: center;
 }
 </style>

@@ -26,7 +26,7 @@
       <!-- 列表区域 -->
       <el-table :data="favoriteList"
                 stripe>
-        <el-table-column label="仪器id"
+        <el-table-column label="仪器ID"
                          width="70px"
                          prop="machineId"></el-table-column>
         <el-table-column label="仪器图片"
@@ -178,9 +178,9 @@ export default {
       if (data.action === 'confirm') {
         this.addForm.reservationStartTime = data.reservationStartTime
         this.addForm.reservationEndTime = data.reservationEndTime
-        this.addForm.beginTime = data.beginTime
-        this.addForm.endTime = data.endTime
-        this.addForm.timeGap = data.timeGap
+        // this.addForm.beginTime = data.beginTime
+        // this.addForm.endTime = data.endTime
+        // this.addForm.timeGap = data.timeGap
         const { data: res } = await this.$http.post('reservation/manual', this.addForm)
         console.log(res)
         if (res.code === 20003) {

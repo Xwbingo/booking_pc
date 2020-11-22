@@ -53,7 +53,8 @@
         <el-table-column label="存放位置"
                          prop="installationLocation"></el-table-column>
         <el-table-column label="用途"
-                         prop="application"></el-table-column>
+                         prop="application"
+                         width="300px"></el-table-column>
         <el-table-column label="状态"
                          width="70px">
           <template slot-scope="scope">
@@ -188,9 +189,9 @@ export default {
       if (data.action === 'confirm') {
         this.addForm.reservationStartTime = data.reservationStartTime
         this.addForm.reservationEndTime = data.reservationEndTime
-        this.addForm.beginTime = data.beginTime
-        this.addForm.endTime = data.endTime
-        this.addForm.timeGap = data.timeGap
+        // this.addForm.beginTime = data.beginTime
+        // this.addForm.endTime = data.endTime
+        // this.addForm.timeGap = data.timeGap
         const { data: res } = await this.$http.post('reservation/manual', this.addForm)
         console.log(res)
         if (res.code === 20003) {
